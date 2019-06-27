@@ -47,7 +47,7 @@ void setup(){
 }
 
 /**
- *	Olha se o jogador apertou algum botao e atualiza a posicao
+ *  Olha se o jogador apertou algum botao e atualiza a posicao
  *  do cursor ou marca a posicao como jogada.
 **/
 void readInput(){
@@ -145,7 +145,7 @@ void readInput(){
 }	
 
 /**
- *	Olha se a condicao de vitoria foi cumprida para algum dos jogadores.
+ *  Olha se a condicao de vitoria foi cumprida para algum dos jogadores.
 **/
 void checkWin(){
 	for(int i=0; i<9; i+=3){
