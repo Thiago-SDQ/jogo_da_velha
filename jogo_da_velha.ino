@@ -1,4 +1,4 @@
-//pinos para controle dos registradores
+//pinos para controle dos regististradores
 const int latchPin = 9;
 const int dataPin = 8;
 const int clockPin = 10;
@@ -17,13 +17,14 @@ const int inputDelay = 200;
 int previousColor = -1;
 int selectedPos = 0;
 
-//Numeros que serao mandados para os registradores
+//Numeros que serao mandados para os regististradores
 int led[3] = {0, 0, 0};
 int color[9] = {-1, -1, -1, -1, -1, -1, -1, -1, -1};
 
 int player = 0;
 
 int bit = 0;
+int regist = 0;
 
 int butRel = 1;
 int update = 1;
@@ -47,18 +48,19 @@ void setup(){
 }
 
 /**
- *  Olha se o jogador apertou algum botao e atualiza a posicao
+ *	Olha se o jogador apertou algum botao e atualiza a posicao
  *  do cursor ou marca a posicao como jogada.
 **/
 void readInput(){
 	bit = 2*(selectedPos%3 + 1);
+	regist = selectedPos/3;
 
 	if(digitalRead(leftBut) == HIGH){
 		delay(inputDelay);
-		bitClear(led[selectedPos/3], bit);
-		bitClear(led[selectedPos/3], bit + 1);
+		bitClear(led[regist], bit);
+		bitClear(led[regist], bit + 1);
 
-		if(color[selectedPos] != -1) bitSet(led[selectedPos/3], bit + color[selectedPos]);  
+		if(color[selectedPos] != -1) bitSet(led[regist], bit + color[selectedPos]);  
 
 		butRel = 0;
 
@@ -69,10 +71,10 @@ void readInput(){
 		lastIn = leftBut;
 	}else if(digitalRead(upBut) == HIGH){
 		delay(inputDelay);
-		bitClear(led[selectedPos/3], bit);
-		bitClear(led[selectedPos/3], bit + 1);
+		bitClear(led[regist], bit);
+		bitClear(led[regist], bit + 1);
 
-		if(color[selectedPos] != -1) bitSet(led[selectedPos/3], bit + color[selectedPos]);  
+		if(color[selectedPos] != -1) bitSet(led[regist], bit + color[selectedPos]);  
 
 		butRel = 0;
 		
@@ -83,10 +85,10 @@ void readInput(){
 		lastIn = upBut;
 	}else if(digitalRead(rightBut) == HIGH){
 		delay(inputDelay);
-		bitClear(led[selectedPos/3], bit);
-		bitClear(led[selectedPos/3], bit + 1);
+		bitClear(led[regist], bit);
+		bitClear(led[regist], bit + 1);
 
-		if(color[selectedPos] != -1) bitSet(led[selectedPos/3], bit + color[selectedPos]);  
+		if(color[selectedPos] != -1) bitSet(led[regist], bit + color[selectedPos]);  
 
 		butRel = 0;
 		
@@ -98,10 +100,10 @@ void readInput(){
 	}else if(digitalRead(downBut) == HIGH){
 		delay(inputDelay);
 
-		bitClear(led[selectedPos/3], bit);
-		bitClear(led[selectedPos/3], bit + 1);
+		bitClear(led[regist], bit);
+		bitClear(led[regist], bit + 1);
 
-		if(color[selectedPos] != -1) bitSet(led[selectedPos/3], bit + color[selectedPos]);  
+		if(color[selectedPos] != -1) bitSet(led[regist], bit + color[selectedPos]);  
 
 		butRel = 0;
 		
@@ -113,10 +115,10 @@ void readInput(){
 	}else if(digitalRead(placeBut) == HIGH){
 		delay(inputDelay);
 
-		bitClear(led[selectedPos/3], bit);
-		bitClear(led[selectedPos/3], bit + 1);
+		bitClear(led[regist], bit);
+		bitClear(led[regist], bit + 1);
 
-		if(color[selectedPos] != -1) bitSet(led[selectedPos/3], bit + color[selectedPos]);  
+		if(color[selectedPos] != -1) bitSet(led[regist], bit + color[selectedPos]);  
 
 		butRel = 0;
 		
@@ -127,7 +129,7 @@ void readInput(){
 		
 		player = (player + 1)%2;
 
-		bitSet(led[selectedPos/3], bit + color[selectedPos]);
+		bitSet(led[regist], bit + color[selectedPos]);
 
 		selectedPos = 0;
 		update = 1;
@@ -138,14 +140,15 @@ void readInput(){
 
 	if(update == 1){
 		bit = 2*(selectedPos%3 + 1);
+		regist = selectedPos/3;
 
-		bitSet(led[selectedPos/3], bit);
-		bitSet(led[selectedPos/3], bit + 1);
+		bitSet(led[regist], bit);
+		bitSet(led[regist], bit + 1);
 	}
 }	
 
 /**
- *  Olha se a condicao de vitoria foi cumprida para algum dos jogadores.
+ *	Olha se a condicao de vitoria foi cumprida para algum dos jogadores.
 **/
 void checkWin(){
 	for(int i=0; i<9; i+=3){
@@ -176,7 +179,7 @@ void loop() {
 	if(winner == -1){
 		checkWin();
 
-		if(cont > 8){//caso o tabuleiro tenha sido preenchido e nenhum jogador ganhou.
+		if(cont > 8){ //caso o tabuleiro tenha sido preenchido e nenhum jogador ganhou.
 			winner = 2;
 
 			led[0] = 252;
@@ -213,7 +216,7 @@ void loop() {
 
 	/**
 	 *  Olha se deve piscar o cursor ou todos os leds caso o jogo tenha acabado. 
-	 **/
+	**/
 	if(currentTime - previousTime >= interval){
 		previousTime = currentTime;
 
@@ -221,13 +224,14 @@ void loop() {
 		cont++;
 		}else{
 			bit = 2*(selectedPos%3 + 1);
+			regist = selectedPos/3;
 
-			if((led[selectedPos/3] & ((1<<bit)+(1<<(bit+1)))) != 0){
-				bitClear(led[selectedPos/3], bit);
-				bitClear(led[selectedPos/3], bit + 1);
+			if((led[regist] & ((1<<bit)+(1<<(bit+1)))) != 0){
+				bitClear(led[regist], bit);
+				bitClear(led[regist], bit + 1);
 			}else{
-				bitSet(led[selectedPos/3], bit);
-				bitSet(led[selectedPos/3], bit + 1);
+				bitSet(led[regist], bit);
+				bitSet(led[regist], bit + 1);
 			}
 		}
 
