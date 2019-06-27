@@ -5,7 +5,7 @@ Vídeo: https://youtu.be/p1oP6iysT8Q
 
 ![Projeto](images/projeto.jpg "Projeto")
 
-# Circuito
+## Circuito
 
 Tinkercad: https://www.tinkercad.com/things/0NdGDQtXdvq
 
