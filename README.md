@@ -1,2 +1,4 @@
-# jogo_da_velha
-Jogo da velha utilizando Arduino
+# Jogo da Velha
+Projeta em Arduino de um jogo da velha, utilizando leds bicolores e registradores de 8 bits.
+
+
